@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: task-management-api
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/taskmanager
+    username: postgres
+    password: postgres
+    
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    
+server:
+  port: 8080
