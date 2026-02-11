@@ -8,12 +8,14 @@ import com.taskmanager.user.entity.User;
 import com.taskmanager.user.repository.UserRepository;
 import com.taskmanager.user.dtos.UserDto;
 import com.taskmanager.user.utils.MissingId;
+import com.taskmanager.user.utils.MissingBody;
 
 @Service
 public class UserService {
    private final UserRepository repo;   
    private PasswordEncoder passwordEncoder;
    private MissingId idIsMissing = new MissingId();
+   private MissingBody missingBody = new MissingBody();
     public UserService(UserRepository repo, PasswordEncoder passwordEncoder){
         this.repo = repo;
         this.passwordEncoder = passwordEncoder;
@@ -23,6 +25,7 @@ public class UserService {
 
         try{
             User user = new User();
+            missingBody.missingFields(body);
             user.setName(body.getName());
             user.setEmail(body.getEmail());
             user.setPassword(passwordEncoder.encode(body.getPassword()));
@@ -34,6 +37,7 @@ public class UserService {
 
     public User updateUser(UserDto body, String id) {
     idIsMissing.missingID(id);
+    missingBody.missingFields(body);
     User user = repo.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado")); 
 
     user.setName(body.getName());
@@ -62,6 +66,7 @@ public User getUserById(String id){
 public User patchUser(String id, UserDto body){
     try{
        idIsMissing.missingID(id);
+         missingBody.missingFields(body);
         User user = repo.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado"));
             if(body.getName() != null) user.setName(body.getName());
             if(body.getEmail() != null) user.setEmail(body.getEmail());
