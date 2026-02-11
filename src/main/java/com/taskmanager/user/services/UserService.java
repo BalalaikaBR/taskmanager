@@ -9,6 +9,7 @@ import com.taskmanager.user.repository.UserRepository;
 import com.taskmanager.user.dtos.UserDto;
 import com.taskmanager.user.utils.MissingId;
 import com.taskmanager.user.utils.MissingBody;
+import com.taskmanager.exceptions.GenericException;
 
 @Service
 public class UserService {
@@ -16,6 +17,7 @@ public class UserService {
    private PasswordEncoder passwordEncoder;
    private MissingId idIsMissing = new MissingId();
    private MissingBody missingBody = new MissingBody();
+   private GenericException error = new GenericException();
     public UserService(UserRepository repo, PasswordEncoder passwordEncoder){
         this.repo = repo;
         this.passwordEncoder = passwordEncoder;
@@ -32,7 +34,7 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(body.getPassword()));
             return repo.save(user);
         }catch(Exception e){
-            throw new RuntimeException(e);
+           return error.handleException(e);
         }
     }
 
@@ -61,7 +63,7 @@ public User getUserById(String id){
         idIsMissing.missingID(id);
         return repo.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado"));
     }catch(Exception e){
-    throw new RuntimeException(e);
+   return error.handleException(e);
 }
 }
 
@@ -76,7 +78,7 @@ public User patchUser(String id, UserDto body){
             if(body.getRole() != null) user.setRole(body.getRole());
             return repo.save(user);
     }catch(Exception e){
-        throw new RuntimeException(e);
+      return error.handleException(e);
     }
 }
 
@@ -85,7 +87,7 @@ public List<User> getAllUser(){
 try{
     return repo.findAll();
 }catch(Exception e){
-    throw new RuntimeException(e);
+     return error.handleException(e);
 }
 }
 
