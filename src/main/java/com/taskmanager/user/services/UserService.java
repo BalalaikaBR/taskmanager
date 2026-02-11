@@ -28,6 +28,7 @@ public class UserService {
             missingBody.missingFields(body);
             user.setName(body.getName());
             user.setEmail(body.getEmail());
+            user.setRole(body.getRole());
             user.setPassword(passwordEncoder.encode(body.getPassword()));
             return repo.save(user);
         }catch(Exception e){
@@ -42,6 +43,7 @@ public class UserService {
 
     user.setName(body.getName());
     user.setEmail(body.getEmail());
+    user.setRole(body.getRole());
     user.setPassword(passwordEncoder.encode(body.getPassword()));
 
     return repo.save(user);
@@ -71,6 +73,7 @@ public User patchUser(String id, UserDto body){
             if(body.getName() != null) user.setName(body.getName());
             if(body.getEmail() != null) user.setEmail(body.getEmail());
             if(body.getPassword() != null) user.setPassword(passwordEncoder.encode(body.getPassword()));
+            if(body.getRole() != null) user.setRole(body.getRole());
             return repo.save(user);
     }catch(Exception e){
         throw new RuntimeException(e);
