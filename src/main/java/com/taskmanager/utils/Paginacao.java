@@ -1,4 +1,4 @@
-package com.taskmanager.user.utils;
+package com.taskmanager.utils;
 
 public class Paginacao {
    

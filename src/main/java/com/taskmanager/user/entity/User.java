@@ -1,6 +1,7 @@
 package com.taskmanager.user.entity;
 
 import com.taskmanager.user.Role.Role;
+import com.taskmanager.utils.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
    private String id;

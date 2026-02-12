@@ -7,10 +7,11 @@ import org.springframework.stereotype.Service;
 import com.taskmanager.user.entity.User;
 import com.taskmanager.user.repository.UserRepository;
 import com.taskmanager.user.dtos.UserDto;
-import com.taskmanager.user.utils.MissingId;
 import com.taskmanager.user.utils.MissingBody;
 import com.taskmanager.exceptions.GenericException;
-import com.taskmanager.user.utils.Paginacao;
+import com.taskmanager.utils.MissingId;
+import com.taskmanager.utils.Paginacao;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -1,4 +1,4 @@
-package com.taskmanager.user.utils;
+package com.taskmanager.utils;
 
 import com.taskmanager.user.Role.Role;
 public final class AuthorizationUtils  {
