@@ -10,7 +10,10 @@ import com.taskmanager.user.dtos.UserDto;
 import com.taskmanager.user.utils.MissingId;
 import com.taskmanager.user.utils.MissingBody;
 import com.taskmanager.exceptions.GenericException;
-
+import com.taskmanager.user.utils.Paginacao;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 @Service
 public class UserService {
    private final UserRepository repo;   
@@ -83,9 +86,10 @@ public User patchUser(String id, UserDto body){
 }
 
 
-public List<User> getAllUser(){
+public Page<User> getAllUser(int pageNum, int limitNum){
 try{
-    return repo.findAll();
+    Pageable pageable = PageRequest.of(pageNum - 1, limitNum);
+    return repo.findAll(pageable);
 }catch(Exception e){
      return error.handleException(e);
 }
