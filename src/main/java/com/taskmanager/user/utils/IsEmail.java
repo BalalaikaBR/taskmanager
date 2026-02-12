@@ -1,6 +1,8 @@
 package com.taskmanager.user.utils;
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Component;
+
 public class IsEmail{ 
     public Boolean isEmail(String email){ 
         boolean condicao = true;
