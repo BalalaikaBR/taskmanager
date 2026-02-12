@@ -14,12 +14,14 @@ import com.taskmanager.user.utils.Paginacao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import com.taskmanager.user.utils.IsEmail;
 @Service
 public class UserService {
    private final UserRepository repo;   
    private PasswordEncoder passwordEncoder;
    private MissingId idIsMissing = new MissingId();
    private MissingBody missingBody = new MissingBody();
+   private IsEmail email = new IsEmail();
    private GenericException error = new GenericException();
     public UserService(UserRepository repo, PasswordEncoder passwordEncoder){
         this.repo = repo;
@@ -31,6 +33,7 @@ public class UserService {
         try{
             User user = new User();
             missingBody.missingFields(body);
+            email.isEmail(body.getEmail());
             user.setName(body.getName());
             user.setEmail(body.getEmail());
             user.setRole(body.getRole());
@@ -44,6 +47,7 @@ public class UserService {
     public User updateUser(UserDto body, String id) {
     idIsMissing.missingID(id);
     missingBody.missingFields(body);
+    email.isEmail(body.getEmail());
     User user = repo.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado")); 
 
     user.setName(body.getName());
@@ -73,7 +77,7 @@ public User getUserById(String id){
 public User patchUser(String id, UserDto body){
     try{
        idIsMissing.missingID(id);
-         missingBody.missingFields(body);
+        
         User user = repo.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado"));
             if(body.getName() != null) user.setName(body.getName());
             if(body.getEmail() != null) user.setEmail(body.getEmail());
