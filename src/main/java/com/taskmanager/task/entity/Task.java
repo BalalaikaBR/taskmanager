@@ -5,13 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 
 import com.taskmanager.task.utils.status.StatusTask;
+import com.taskmanager.user.entity.User;
 import com.taskmanager.utils.BaseEntity;
 @Setter
 @Getter
@@ -30,4 +32,7 @@ public class Task extends BaseEntity{
     @Column(nullable = false)
     private StatusTask status = StatusTask.ANDAMENTO;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
