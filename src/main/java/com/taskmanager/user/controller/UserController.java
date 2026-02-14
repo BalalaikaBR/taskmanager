@@ -20,7 +20,7 @@ import com.taskmanager.user.entity.User;
 import com.taskmanager.user.services.UserService;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("api/user")
 public class UserController {
     private final UserService userService;
     public UserController(UserService userService){

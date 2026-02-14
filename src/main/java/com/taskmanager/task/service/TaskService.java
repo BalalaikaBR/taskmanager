@@ -1,15 +1,12 @@
 package com.taskmanager.task.service;
 import com.taskmanager.exceptions.GenericException;
 import com.taskmanager.task.dtos.TaskDto;
-import com.taskmanager.task.dtos.UserTask;
 import com.taskmanager.task.entity.Task;
 import com.taskmanager.task.repository.TaskRepository;
 import com.taskmanager.user.entity.User;
 import com.taskmanager.user.repository.UserRepository;
 import com.taskmanager.utils.MissingId;
 
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -77,6 +74,7 @@ public class TaskService {
              task.setTask(task.getTask());
                 task.setStatus(task.getStatus());
                 task.setCompleted(task.getCompleted());
+                task.setUser(task.getUser());
                 return repo.save(task);
         }catch(Exception e){
               return error.handleException(e);

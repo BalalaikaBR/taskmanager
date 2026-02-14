@@ -18,10 +18,9 @@ public class TaskHooks {
     public TaskHooks( TaskService taskService){
         this.taskService = taskService;
     }
-        public List<Task> tasksCompleted(){
+        public List<Task> tasksCompleted(int page, int limit){
             try{
-                int page = 1;
-                int limit = 100;
+                
                 ArrayList taskCompleted = new ArrayList<Task>();
                 Page<Task> task = taskService.getAllTaks(page, limit);
                 for(Task k : task.getContent()){
@@ -37,19 +36,18 @@ public class TaskHooks {
         }
 
 
-        public List<Task> taskPendente(){
+        public List<Task> taskPendente(int page, int limit){
             try{
-                int page = 1;
-                int limit = 100;
-                ArrayList taskPendente = new ArrayList<Task>();
+                
+                ArrayList pendingTask = new ArrayList<Task>();
                 Page<Task> task = taskService.getAllTaks(page, limit);
                
                 for(Task k : task.getContent()){
                     if(k.getCompleted() == false){
-                        taskPendente.add(k);
+                        pendingTask.add(k);
                     }
                 }
-                return taskPendente();
+                return pendingTask;
             }catch(Exception e){
                   return error.handleException(e);
             }
