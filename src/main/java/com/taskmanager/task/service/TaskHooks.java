@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.taskmanager.task.repository.TaskRepository;
+import com.taskmanager.task.dtos.TaskStatusResponse;
 import com.taskmanager.task.entity.Task;
 import com.taskmanager.exceptions.GenericException;
 @Service
@@ -48,6 +49,26 @@ public class TaskHooks {
                     }
                 }
                 return pendingTask;
+            }catch(Exception e){
+                  return error.handleException(e);
+            }
+        }
+
+        public String taskStatus(int page, int limit){
+            try{
+                    int completas = 0;
+                    int pendentes = 0; 
+
+                 Page<Task> tasks = taskService.getAllTaks(page, limit);
+                 for(Task t: tasks.getContent()){
+                    if(t.getCompleted() == true){
+                        completas++;
+                    }
+                    if(t.getCompleted() == false){
+                        pendentes++;
+                    }
+                }
+                return new TaskStatusResponse(completas, pendentes).toString();
             }catch(Exception e){
                   return error.handleException(e);
             }
