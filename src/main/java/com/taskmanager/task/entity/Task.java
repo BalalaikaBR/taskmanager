@@ -32,7 +32,12 @@ public class Task extends BaseEntity{
     @Column(nullable = false)
     private StatusTask status = StatusTask.ANDAMENTO;
 
+    @Column(nullable = false)
+    private Boolean privateTask = false;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    
 }

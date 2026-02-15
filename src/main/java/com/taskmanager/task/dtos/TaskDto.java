@@ -16,6 +16,7 @@ public class TaskDto {
   private String task;
   private Boolean completed;
   private StatusTask status;
+  private Boolean privateTask;
   private String userId;
 
 }

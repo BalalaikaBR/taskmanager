@@ -38,6 +38,7 @@ public class TaskService {
                 newTask.setTask(task.getTask());
                 newTask.setStatus(task.getStatus());
                 newTask.setCompleted(task.getCompleted());
+                newTask.setPrivateTask(task.getPrivateTask());
                 newTask.setUser(user);
                 return repo.save(newTask);
         }catch(Exception e){
@@ -61,6 +62,7 @@ public class TaskService {
             if(body.getTask() != null) task.setTask(body.getTask()); 
             if(body.getCompleted() != null) task.setCompleted(body.getCompleted());
             if(body.getStatus() != null) task.setStatus(body.getStatus());
+            if(body.getPrivateTask() != null) task.setPrivateTask(body.getPrivateTask());
             return repo.save(task);
         }catch(Exception e){
               return error.handleException(e);
@@ -74,6 +76,7 @@ public class TaskService {
              task.setTask(task.getTask());
                 task.setStatus(task.getStatus());
                 task.setCompleted(task.getCompleted());
+                task.setPrivateTask(task.getPrivateTask());
                 task.setUser(task.getUser());
                 return repo.save(task);
         }catch(Exception e){
