@@ -1,5 +1,8 @@
 package com.taskmanager.user.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.taskmanager.user.Role.Role;
 import com.taskmanager.utils.BaseEntity;
 
@@ -10,6 +13,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,29 +25,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity()
-@Table(name = "users") 
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class User extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-   private String id;
-    
-    @Column(nullable = false)
-   private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-     @Column(nullable = false, unique = true)
-   private String email;
+  @Column(nullable = false)
+  private String name;
 
-    @Column(nullable = false)
-   private String password;
+  @Column(nullable = false, unique = true)
+  private String email;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.USER; 
+  @Column(nullable = false)
+  private String password;
 
-  
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private Role role = Role.USER;
+
+  @Column(nullable = true)
+  @ManyToMany
+  @JoinTable(name = "user_friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
+  private List<User> friends = new ArrayList<User>();
+
 }
+

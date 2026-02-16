@@ -1,5 +1,6 @@
 package com.taskmanager.user.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,6 +48,7 @@ public class UserService {
             user.setEmail(body.getEmail());
             user.setRole(body.getRole());
             user.setPassword(passwordEncoder.encode(body.getPassword()));
+            user.setFriends(body.getFriends());
             repo.save(user);
             UserEventDto userEvent = new UserEventDto();
             userEvent.setId(user.getId());
@@ -71,7 +73,7 @@ public class UserService {
         user.setEmail(body.getEmail());
         user.setRole(body.getRole());
         user.setPassword(passwordEncoder.encode(body.getPassword()));
-
+        user.setFriends(body.getFriends());
         repo.save(user);
         UserEventDto userEvent = new UserEventDto();
         userEvent.setId(user.getId());
@@ -119,6 +121,7 @@ public class UserService {
                 user.setPassword(passwordEncoder.encode(body.getPassword()));
             if (body.getRole() != null)
                 user.setRole(body.getRole());
+            if(body.getFriends() != null) user.setFriends(body.getFriends());
             repo.save(user);
             UserEventDto userEvent = new UserEventDto();
             userEvent.setId(user.getId());
@@ -142,5 +145,65 @@ public class UserService {
             return error.handleException(e);
         }
     }
+    public List<User> listUsersToAdd(int page, int limit, String loggedUserId){
+    try{
+        Page<User> users = getAllUser(page, limit);
+
+        return users.getContent()
+                .stream()
+                .filter(user -> !user.getId().equals(loggedUserId))
+                .toList();
+
+    } catch(Exception e){
+        return error.handleException(e);
+    }
+}
+
+public User addUser(String idFriend, String loggedUserId) {
+
+    try {
+
+        idIsMissing.missingID(idFriend);
+        idIsMissing.missingID(loggedUserId);
+
+        if (idFriend.equals(loggedUserId)) {
+            throw new RuntimeException("Você não pode se adicionar!");
+        }
+
+        User loggedUser = repo.findById(loggedUserId)
+                .orElseThrow(() -> new RuntimeException("Usuário logado não encontrado"));
+
+        User friend = repo.findById(idFriend)
+                .orElseThrow(() -> new RuntimeException("Usuário amigo não encontrado"));
+
+        if (loggedUser.getFriends() == null) {
+            loggedUser.setFriends(new ArrayList<>());
+        }
+
+        boolean alreadyFriends = loggedUser.getFriends()
+                .stream()
+                .anyMatch(u -> u.getId().equals(idFriend));
+
+        if (alreadyFriends) {
+            throw new RuntimeException("Esse usuário já é seu amigo!");
+        }
+
+        loggedUser.getFriends().add(friend);
+
+        if (friend.getFriends() == null) {
+            friend.setFriends(new ArrayList<>());
+        }
+
+        friend.getFriends().add(loggedUser);
+
+        repo.save(friend);
+        return repo.save(loggedUser);
+
+    } catch (Exception e) {
+        return error.handleException(e);
+    }
+}
+
+
 
 }
